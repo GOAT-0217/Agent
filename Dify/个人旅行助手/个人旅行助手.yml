@@ -1,0 +1,201 @@
+app:
+  description: ''
+  icon: 61480b65-f483-4670-8d5a-a9c0cb9b8513
+  icon_background: '#FFEAD5'
+  mode: agent-chat
+  name: 个人旅行助手
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/deepseek:0.0.11@35bcd3f233f99d07bdadef8b326945df3bda5e8f773330144bc90d84800336b9
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/google:0.0.9@d360bbc433f39be1b11909cb9c32e6be4a17ea06af083f9e1c7613bb802bf517
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/wikipedia:0.0.3@63972698f033252b19a23a203f0beb6c3af16c6e8b0b886f001d902165a3da0c
+    version: null
+kind: app
+model_config:
+  agent_mode:
+    enabled: true
+    max_iteration: 10
+    prompt: null
+    strategy: function_call
+    tools:
+    - enabled: true
+      notAuthor: false
+      provider_id: langgenius/wikipedia/wikipedia
+      provider_name: langgenius/wikipedia/wikipedia
+      provider_type: builtin
+      tool_label: 维基百科搜索
+      tool_name: wikipedia_search
+      tool_parameters:
+        language: null
+        query: null
+      type: builtin
+    - enabled: true
+      notAuthor: false
+      provider_id: langgenius/google/google
+      provider_name: langgenius/google/google
+      provider_type: builtin
+      tool_label: 谷歌搜索
+      tool_name: google_search
+      tool_parameters:
+        gl: null
+        hl: null
+        location: null
+        query: null
+      type: builtin
+    - enabled: true
+      notAuthor: false
+      provider_id: langgenius/google/google
+      provider_name: langgenius/google/google
+      provider_type: builtin
+      tool_label: 谷歌图片搜索
+      tool_name: google_image_search
+      tool_parameters:
+        gl: null
+        hl: null
+        imgsz: m
+        location: null
+        max_results: 3
+        query: null
+      type: builtin
+    - enabled: true
+      notAuthor: false
+      provider_id: webscraper
+      provider_name: webscraper
+      provider_type: builtin
+      tool_label: 网页爬虫
+      tool_name: webscraper
+      tool_parameters:
+        generate_summary: 'false'
+        url: null
+        user_agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
+          like Gecko) Chrome/100.0.1000.0 Safari/537.36
+      type: builtin
+  annotation_reply:
+    enabled: false
+  chat_prompt_config:
+    prompt:
+    - role: system
+      text: ''
+  completion_prompt_config:
+    conversation_histories_role:
+      assistant_prefix: ''
+      user_prefix: ''
+    prompt:
+      text: ''
+  dataset_configs:
+    datasets:
+      datasets: []
+    retrieval_model: multiple
+    top_k: 4
+  dataset_query_variable: ''
+  external_data_tools: []
+  file_upload:
+    allowed_file_extensions:
+    - .JPG
+    - .JPEG
+    - .PNG
+    - .GIF
+    - .WEBP
+    - .SVG
+    - .MP4
+    - .MOV
+    - .MPEG
+    - .WEBM
+    allowed_file_types: []
+    allowed_file_upload_methods:
+    - remote_url
+    - local_file
+    enabled: false
+    image:
+      detail: high
+      enabled: false
+      number_limits: 3
+      transfer_methods:
+      - remote_url
+      - local_file
+    number_limits: 3
+  model:
+    completion_params:
+      stop: []
+    mode: chat
+    name: deepseek-chat
+    provider: langgenius/deepseek/deepseek
+  more_like_this:
+    enabled: false
+  opening_statement: 欢迎！我是您的专属个人旅行助手，专门为您量身打造详细、实用且符合预算的旅行行程。无论您想去哪里，计划玩几天，预算多少，只需告诉我您的
+    **目的地**、**旅行天数** 和 **总预算**，我就能为您规划一份包含每日主题、景点活动、美食住宿推荐和预算分配的完整行程。我的风格是热情、细致且可靠的，就像一位经验丰富的旅行规划师朋友，致力于让您的每一次旅行都轻松又精彩。请告诉我您的旅行想法吧！
+  pre_prompt: "```xml\n<instruction>\n你是一个专业的个人旅行助手。请根据用户提供的目的地、旅行天数和预算，生成一份详细、实用且符合预算的旅行行程建议。\n\
+    请严格按照以下步骤执行：\n1.  **分析需求**：仔细阅读用户提供的 `destination`（目的地）、`day`（天数）和 `budget`（预算）信息。\n\
+    2.  **生成行程**：基于以上信息，规划一份完整的每日行程。行程应包括：\n    *   **每日主题**：简要概括当天的旅行重点。\n    * \
+    \  **上午安排**：推荐具体景点或活动，并说明理由。\n    *   **下午安排**：推荐具体景点或活动，并说明理由。\n    *   **餐饮建议**：推荐当地特色美食或餐厅，并考虑预算。\n\
+    \    *   **住宿建议**：根据总预算，推荐合适的住宿类型或区域。\n    *   **预算分配**：大致说明交通、餐饮、门票、住宿等费用的分配建议，确保总花费在预算范围内。\n\
+    \    *   **实用贴士**：提供一些针对该目的地的旅行小贴士，如交通方式、必备物品、注意事项等。\n3.  **格式要求**：输出内容应结构清晰，使用标题、列表等方式使信息易于阅读。**最终输出中不得包含任何XML标签**，只输出纯文本格式的行程计划。\n\
+    \n请使用以下变量信息来生成行程：\n目的地：{{destination}}\n天数：{{day}}\n预算：{{budget}}\n</instruction>\n\
+    \n<example>\n以下是一个示例，展示了当用户输入特定值时应生成的行程格式和内容深度。请注意，这只是一个示例，你需要根据用户提供的实际变量值来生成全新的内容。\n\
+    \n用户输入变量值：\n目的地：成都\n天数：3\n预算：2000元\n\nAI生成的行程输出（纯文本）：\n\n**成都3天2晚悠闲美食文化之旅 (预算：2000元)**\n\
+    \n**行程总览：**\n本次行程聚焦成都的经典景点、熊猫文化和地道美食，预算分配注重性价比，确保体验丰富。\n\n**预算分配建议：**\n*   住宿：300元/晚\
+    \ x 2晚 = 600元\n*   餐饮：150元/天 x 3天 = 450元\n*   门票及活动：大熊猫基地60元 + 武侯祠50元 + 锦里/宽窄巷子（免费）\
+    \ = 约110元\n*   市内交通：100元\n*   预留机动费用：740元（用于购买纪念品、小吃或应急）\n\n**每日详细行程：**\n\n**第一天：初识蓉城，漫步古街**\n\
+    *   **上午**：抵达成都，入住春熙路或天府广场附近的经济型酒店/青年旅社。放下行李后，前往【人民公园】体验成都慢生活，在鹤鸣茶社喝一碗盖碗茶。\n*\
+    \   **下午**：游览【宽窄巷子】，感受“宽巷子不宽，窄巷子不窄”的清代街区风貌。可以品尝糖油果子、三大炮等小吃。\n*   **晚上**：在【奎星楼街】或【建设路】寻找地道晚餐，尝试冒菜、串串香。餐后可以逛逛【锦里】古街的夜景。\n\
+    *   **餐饮**：午餐可在宽窄巷子解决小吃，晚餐在奎星楼街正餐，人均约60-80元。\n\n**第二天：探访国宝，感受三国**\n*   **上午**：早起前往【成都大熊猫繁育研究基地】，观看大熊猫吃早餐、玩耍的最佳时段（建议7:30开园即入）。\n\
+    *   **下午**：参观【武侯祠】，了解三国蜀汉文化。随后就在隔壁的【锦里】继续逛吃，体验更多四川民俗。\n*   **晚上**：享用一顿正式的【川菜晚餐】，如麻婆豆腐、回锅肉、夫妻肺片等。可选择知名餐厅如“陈麻婆豆腐”或本地人推荐的家常馆子。\n\
+    *   **餐饮**：午餐可在锦里或基地外简单解决，晚餐川菜人均约80-100元。\n\n**第三天：文艺打卡，惬意返程**\n*   **上午**：参观【成都博物馆】或【四川省博物院】（需提前预约），深入了解巴蜀文明。或者前往【东郊记忆】，一个由旧工厂改造的文艺公园，适合拍照。\n\
+    *   **下午**：根据返程时间，可以去【太古里】商圈现代街区逛逛，感受成都的时尚一面。最后购买一些如张飞牛肉、火锅底料等特产作为伴手礼。\n*   **餐饮**：午餐可在博物馆附近或东郊记忆解决，选择面食或快餐，人均约40-60元。\n\
+    \n**实用旅行贴士：**\n1.  交通：下载“天府通”APP乘坐地铁公交很方便。市区景点间地铁+共享单车是性价比最高的组合。\n2.  美食：不用只盯著名店，很多街边小店味道同样正宗。\n\
+    3.  门票：尽量通过官方渠道提前预约购买，避免排队。\n4.  天气：成都气候湿润，随身带伞，穿舒适的鞋子。\n</example>\n\n<input>\n\
+    目的地：{{destination}}\n旅行天数：{{day}}\n总预算：{{budget}}\n</input>\n\n<output>\n（请根据上述指令和示例格式，生成一份全新的、详细的纯文本旅行行程计划）\n\
+    </output>\n```"
+  prompt_type: simple
+  retriever_resource:
+    enabled: true
+  sensitive_word_avoidance:
+    config:
+      inputs_config:
+        enabled: true
+        preset_response: 这个问题我不知道，因为我是个人旅行助手
+      keywords: 阅读
+      outputs_config:
+        enabled: false
+    enabled: true
+    type: keywords
+  speech_to_text:
+    enabled: false
+  suggested_questions:
+  - 张家界7天旅行计划
+  - 上海7天旅行计划
+  - 南京7天旅行计划
+  suggested_questions_after_answer:
+    enabled: true
+  text_to_speech:
+    enabled: false
+    language: ''
+    voice: ''
+  user_input_form:
+  - text-input:
+      default: ''
+      label: destination
+      required: true
+      variable: destination
+  - text-input:
+      default: ''
+      label: day
+      required: true
+      variable: day
+  - text-input:
+      default: ''
+      label: budget
+      required: true
+      variable: budget
+version: 0.6.0
