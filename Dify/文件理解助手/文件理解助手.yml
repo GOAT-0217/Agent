@@ -1,0 +1,435 @@
+app:
+  description: ''
+  icon: grinning
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: 文件理解助手
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.5
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions: []
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - remote_url
+      - local_file
+      enabled: true
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      number_limits: 1
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: iteration
+      id: 1772258069944-source-1772260449364-target
+      source: '1772258069944'
+      sourceHandle: source
+      target: '1772260449364'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: true
+        iteration_id: '1772260449364'
+        sourceType: iteration-start
+        targetType: document-extractor
+      id: 1772260449364start-source-1772260459885-target
+      source: 1772260449364start
+      sourceHandle: source
+      target: '1772260459885'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: true
+        iteration_id: '1772260449364'
+        sourceType: document-extractor
+        targetType: llm
+      id: 1772260459885-source-1772260505511-target
+      source: '1772260459885'
+      sourceHandle: source
+      target: '1772260505511'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: true
+        iteration_id: '1772260449364'
+        sourceType: llm
+        targetType: llm
+      id: 1772260505511-source-1772260554458-target
+      source: '1772260505511'
+      sourceHandle: source
+      target: '1772260554458'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: false
+        sourceType: iteration
+        targetType: answer
+      id: 1772260449364--1772261087876-target
+      source: '1772260449364'
+      sourceHandle: source
+      target: '1772261087876'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables: []
+      height: 52
+      id: '1772258069944'
+      position:
+        x: 80
+        y: 282
+      positionAbsolute:
+        x: 80
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        desc: ''
+        error_handle_mode: terminated
+        height: 178
+        is_parallel: false
+        iterator_selector:
+        - sys
+        - files
+        output_selector:
+        - '1772260554458'
+        - text
+        output_type: array[string]
+        parallel_nums: 10
+        selected: false
+        start_node_id: 1772260449364start
+        title: 迭代
+        type: iteration
+        width: 990
+      height: 178
+      id: '1772260449364'
+      position:
+        x: 279.431604084627
+        y: 467.343696394362
+      positionAbsolute:
+        x: 279.431604084627
+        y: 467.343696394362
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 990
+      zIndex: 1
+    - data:
+        desc: ''
+        isInIteration: true
+        selected: false
+        title: ''
+        type: iteration-start
+      draggable: false
+      height: 48
+      id: 1772260449364start
+      parentId: '1772260449364'
+      position:
+        x: 24
+        y: 68
+      positionAbsolute:
+        x: 303.431604084627
+        y: 535.343696394362
+      selectable: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom-iteration-start
+      width: 44
+      zIndex: 1002
+    - data:
+        desc: ''
+        isInIteration: true
+        is_array_file: false
+        iteration_id: '1772260449364'
+        selected: false
+        title: 文档提取器
+        type: document-extractor
+        variable_selector:
+        - '1772260449364'
+        - item
+      height: 90
+      id: '1772260459885'
+      parentId: '1772260449364'
+      position:
+        x: 128
+        y: 68
+      positionAbsolute:
+        x: 407.431604084627
+        y: 535.343696394362
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 1002
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInIteration: true
+        iteration_id: '1772260449364'
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: DeepSeek-R1-0528
+          provider: volcengine_maas
+        prompt_template:
+        - id: 8fa8e143-7991-4a81-84df-d9ef42678078
+          role: system
+          text: '阅读以下文章内容并执行任务
+
+            {{#1772260459885.text#}}}
+
+
+            # 任务
+
+
+            - **主要目标**：全面解析文章的结构。
+
+            - **目标**：详细说明文章每个部分的内容。
+
+            - **要求**：尽可能详细地分析。
+
+            - **限制**：无特别的格式限制，但需要保持解析的条理性和逻辑性。
+
+            - **预期输出**：文章结构的详细解析，包括每个部分的主要内容和作用。
+
+
+            # 推理顺序
+
+
+            - **推理部分**：通过仔细阅读文章，识别和解析其结构。
+
+            - **结论部分**：提供每个部分的具体内容和作用。
+
+
+            # 输出格式
+
+
+            - **解析格式**：每个部分应以标题形式列出，后跟对该部分内容的详细说明。
+
+            - **结构形式**：Markdown，以增强可读性。
+
+            - **具体说明**：每个部分的内容和作用，包括但不限于引言、正文、结论、引用等。
+
+
+            # 示例输出
+
+
+            ## 示例文章解析
+
+
+            ### 引言
+
+            - **内容**：介绍研究的背景、目的和重要性。
+
+            - **作用**：吸引读者的注意力，为文章内容提供上下文。
+
+
+            ### 方法
+
+            - **内容**：描述研究的具体方法和步骤，包括实验设计、数据收集和分析技术。
+
+            - **作用**：使读者了解研究的科学性和可重复性。
+
+
+            ### 结果
+
+            - **内容**：展示研究的主要发现和数据。
+
+            - **作用**：提供研究结论的证据基础。
+
+
+            ### 讨论
+
+            - **内容**：解释结果的意义，对比其他研究，提出可能的改进方向。
+
+            - **作用**：帮助读者理解结果的广泛影响和未来研究的潜力。
+
+
+            ### 结论
+
+            - **内容**：总结研究的主要发现和贡献。
+
+            - **作用**：强化文章的核心信息，提供明确的结论。
+
+
+            ### 引用
+
+            - **内容**：列出文章中引用的所有文献。
+
+            - **作用**：提供进一步阅读的资源，确保学术诚信。
+
+
+            # 备注
+
+
+            - **边缘情况**：如果文章结构不典型（例如，缺少某些部分或有额外的部分），应在解析中明确指出这些特殊情况。
+
+            - **重要考虑事项**：解析时应关注文章的逻辑性和连贯性，确保每个部分的内容与文章的整体目标一致。'
+        selected: false
+        title: 结构提取
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 96
+      id: '1772260505511'
+      parentId: '1772260449364'
+      position:
+        x: 464.01786834716154
+        y: 62
+      positionAbsolute:
+        x: 743.4494724317885
+        y: 529.343696394362
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 1002
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1772260505511'
+          - text
+        desc: ''
+        isInIteration: true
+        iteration_id: '1772260449364'
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: DeepSeek-R1-0528
+          provider: volcengine_maas
+        prompt_template:
+        - id: 5fccbef2-f4dc-4b47-9712-7d7f176bce76
+          role: system
+          text: '阅读以下文章内容并执行任务
+
+            {{#1772260505511.text#}}}
+
+
+            # 任务
+
+
+            ***主要目标***：全面阅读上文，针对文章各个部分提出尽可能多的问题。
+
+            ***要求***：问题要有意义和价值，值得思考。
+
+            ***限制***：无特定限制。
+
+            ***预期输出***：一系列针对文章各个部分的问题，每个问题都应有深度和思考价值。
+
+
+            # 推理顺序
+
+
+            ***推理部分***：全面阅读文章，分析文章各个部分的内容，思考每个部分可能引发的深层次问题。
+
+            ***结论部分***：提出有意义和有价值的问题，确保问题能够引发深入的思考。
+
+
+            # 输出格式
+
+
+            ***格式***：每个问题单独成行，编号列出。
+
+            ***内容***：针对文章的各个部分（如引言、背景、方法、结果、讨论、结论等）提出问题。
+
+            ***数量***：尽可能多，但每个问题都应有意义和价值。
+
+
+            # 备注
+
+
+            ***边缘情况***：如果文章的某些部分内容较少，可以适当调整问题的数量和深度，但每个问题都应有思考价值。
+
+            ***重要考虑事项***：确保问题能够引导读者深入理解文章内容，而不仅仅是表面的疑问。'
+        selected: false
+        title: 问题抛出
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 96
+      id: '1772260554458'
+      parentId: '1772260449364'
+      position:
+        x: 732
+        y: 68
+      positionAbsolute:
+        x: 1011.431604084627
+        y: 535.343696394362
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 1002
+    - data:
+        answer: '{{#1772260449364.output#}}'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 102
+      id: '1772261087876'
+      position:
+        x: 1467.6096490049083
+        y: 356.6653930748073
+      positionAbsolute:
+        x: 1467.6096490049083
+        y: 356.6653930748073
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: -2787.7056328073977
+      y: -119.07132750923404
+      zoom: 2
