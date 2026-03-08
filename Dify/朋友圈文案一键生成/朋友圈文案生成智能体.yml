@@ -1,0 +1,171 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: agent-chat
+  name: 朋友圈文案生成智能体
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/deepseek:0.0.11@35bcd3f233f99d07bdadef8b326945df3bda5e8f773330144bc90d84800336b9
+    version: null
+kind: app
+model_config:
+  agent_mode:
+    enabled: true
+    max_iteration: 10
+    prompt: null
+    strategy: function_call
+    tools:
+    - enabled: true
+      notAuthor: false
+      provider_id: 0d269195-1583-49bf-8f44-2b505aec066e
+      provider_name: 图片生成工具
+      provider_type: workflow
+      tool_label: 图片生成工具
+      tool_name: gen_img
+      tool_parameters:
+        imgDesc: ''
+      type: workflow
+  annotation_reply:
+    enabled: false
+  chat_prompt_config:
+    prompt:
+    - role: system
+      text: ''
+  completion_prompt_config:
+    conversation_histories_role:
+      assistant_prefix: ''
+      user_prefix: ''
+    prompt:
+      text: ''
+  dataset_configs:
+    datasets:
+      datasets: []
+    retrieval_model: multiple
+    top_k: 4
+  dataset_query_variable: ''
+  external_data_tools: []
+  file_upload:
+    allowed_file_extensions:
+    - .JPG
+    - .JPEG
+    - .PNG
+    - .GIF
+    - .WEBP
+    - .SVG
+    - .MP4
+    - .MOV
+    - .MPEG
+    - .WEBM
+    allowed_file_types: []
+    allowed_file_upload_methods:
+    - remote_url
+    - local_file
+    enabled: false
+    image:
+      detail: high
+      enabled: false
+      number_limits: 3
+      transfer_methods:
+      - remote_url
+      - local_file
+    number_limits: 3
+  model:
+    completion_params:
+      stop: []
+    mode: chat
+    name: deepseek-chat
+    provider: langgenius/deepseek/deepseek
+  more_like_this:
+    enabled: false
+  opening_statement: '欢迎！我是一名图像生成专家，专门帮你将文字描述转化为生动的画面，只需告诉我你想要生成的画面细节（比如「夕阳下的雪山」或「未来城市景观」），我会通过智能工具为你生成对应的图片链接，并用直观的
+    <img src=''''> 格式直接展示给你，我的风格既专业又带点创意，现在试试告诉我你的灵感吧！
+
+
+    【当用户提交描述后，严格按任务要求仅返回 <img src=''图片链接''> 格式，无其他文本或标签】
+
+
+    示例用户输入：
+
+    一只戴着墨镜的熊猫弹吉他
+
+
+    我的输出：
+
+    <img src=''https://example.com/cool_panda.jpg''>'
+  pre_prompt: '<instruction>
+
+    你是一个文生图的专家，根据用户输入的信息调用`图片生成工具`来生成图片。以下是具体步骤：
+
+    1. 接收用户输入的文本描述，变量名为{{text_description}}。
+
+    2. 调用`图片生成工具`，传入{{text_description}}作为参数。
+
+    3. 工具会返回一个JSON格式的响应，其中包含生成的图片地址（img属性的值）。
+
+    4. 直接从JSON响应中提取img属性的值。
+
+    5. 将提取的图片地址直接添加到一个`<img src=''''>` 标签的src属性中，来展示为图片，不要包含任何XML标签或其他额外信息。
+
+
+    注意：输出仅展示图片内容，不要包含任何XML标签或JSON结构。
+
+    </instruction>
+
+
+    <input>
+
+    用户提供的文本描述：{{text_description}}
+
+    </input>
+
+
+    <output>
+
+    直接展示图片内容（从img属性提取的地址）
+
+    </output>
+
+
+    <example>
+
+    <input>
+
+    用户提供的文本描述：一只在草地上奔跑的金毛犬
+
+    </input>
+
+
+    <output>
+
+    （直接展示生成的图片，例如：img = ''https://example.com/image123.jpg'' 那么就展示为 <img src=''https://example.com/image123.jpg''>）
+
+    </output>
+
+    </example>'
+  prompt_type: simple
+  retriever_resource:
+    enabled: true
+  sensitive_word_avoidance:
+    configs: []
+    enabled: false
+    type: ''
+  speech_to_text:
+    enabled: false
+  suggested_questions: []
+  suggested_questions_after_answer:
+    enabled: false
+  text_to_speech:
+    enabled: false
+    language: ''
+    voice: ''
+  user_input_form:
+  - text-input:
+      default: ''
+      label: text_description
+      required: true
+      variable: text_description
+version: 0.6.0
