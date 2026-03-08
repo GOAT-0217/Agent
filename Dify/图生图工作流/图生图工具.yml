@@ -1,0 +1,197 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: 图生图工具
+  use_icon_as_answer_icon: false
+dependencies: []
+kind: app
+version: 0.6.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        attachment_image_file_size_limit: 2
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        file_upload_limit: 20
+        image_file_batch_limit: 10
+        image_file_size_limit: 10
+        single_chunk_attachment_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: end
+      id: 1772611392354-source-1772611497948-target
+      source: '1772611392354'
+      sourceHandle: source
+      target: '1772611497948'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: start
+        targetType: code
+      id: 1772611332796-source-1772611392354-target
+      source: '1772611332796'
+      sourceHandle: source
+      target: '1772611392354'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: 用户输入
+        type: start
+        variables:
+        - default: ''
+          hint: ''
+          label: url
+          options: []
+          placeholder: ''
+          required: true
+          type: text-input
+          variable: url
+        - default: ''
+          hint: ''
+          label: prompt
+          options: []
+          placeholder: ''
+          required: true
+          type: text-input
+          variable: prompt
+      height: 135
+      id: '1772611332796'
+      position:
+        x: -4888.648026622609
+        y: -452.0158322676691
+      positionAbsolute:
+        x: -4888.648026622609
+        y: -452.0158322676691
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import json\nimport requests\n\ndef main(imgUrl: str, prompt: str):\n\
+          \    url = \"http://host.docker.internal:5000/get_img_info\"\n    # 构造请求体\n\
+          \    payload = {\n        \"url\": imgUrl,\n        \"prompt\": prompt,\n\
+          \    }\n    headers = {\n        \"Content-Type\": \"application/json\"\
+          ,\n    }\n    \n    try:\n        response = requests.post(url, json=payload,\
+          \ headers=headers)\n        if response.status_code == 200:\n          \
+          \  # 正确解析JSON并返回对象\n            result_data = response.json()\n        \
+          \    # 如果返回的数据中已经有result字段\n            if isinstance(result_data, dict)\
+          \ and \"result\" in result_data:\n                return {\"result\": result_data[\"\
+          result\"]}\n            else:\n                # 或者直接返回整个响应数据\n        \
+          \        return {\"result\": result_data}\n        else:\n            return\
+          \ {\"result\": f\"请求失败，状态码：{response.status_code}\"}\n            \n   \
+          \ except requests.exceptions.RequestException as e:\n        return {\"\
+          result\": f\"请求异常：{str(e)}\"}\n    except json.JSONDecodeError as e:\n \
+          \       return {\"result\": f\"解析响应 JSON 失败：{str(e)}\"}\n    except Exception\
+          \ as e:\n        return {\"result\": str(e)}"
+        code_language: python3
+        outputs:
+          result:
+            children: null
+            type: object
+        selected: true
+        title: 代码执行
+        type: code
+        variables:
+        - value_selector:
+          - '1772611332796'
+          - url
+          value_type: string
+          variable: imgUrl
+        - value_selector:
+          - '1772611332796'
+          - prompt
+          value_type: string
+          variable: prompt
+      height: 52
+      id: '1772611392354'
+      position:
+        x: -4861.464843716362
+        y: -240.24854287545216
+      positionAbsolute:
+        x: -4861.464843716362
+        y: -240.24854287545216
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        outputs:
+        - value_selector:
+          - '1772611392354'
+          - result
+          value_type: string
+          variable: 代码执行
+        selected: false
+        title: 输出
+        type: end
+      height: 89
+      id: '1772611497948'
+      position:
+        x: -4830.057832605102
+        y: -12.567536437916218
+      positionAbsolute:
+        x: -4830.057832605102
+        y: -12.567536437916218
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: 5724.31879313151
+      y: 686.361747804081
+      zoom: 1.1486983549970349
+  rag_pipeline_variables: []
