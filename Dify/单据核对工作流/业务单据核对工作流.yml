@@ -1,0 +1,339 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: 业务单据核对工作流
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/siliconflow:0.0.44@9dac23fe837d6da24a2cd9ef959c1c93e4e094b7562ad8a2fd3d4cc86c0e3e89
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/zhipuai:0.0.23@7e6213a06c26b17b5dfc2416db36f664d4fb08252bd1644ca54a82a6cc7a8609
+    version: null
+kind: app
+version: 0.6.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        attachment_image_file_size_limit: 2
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        file_upload_limit: 20
+        image_file_batch_limit: 10
+        image_file_size_limit: 10
+        single_chunk_attachment_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInLoop: false
+        sourceType: start
+        targetType: llm
+      id: 1772697636488-source-llm-target
+      source: '1772697636488'
+      sourceHandle: source
+      target: llm
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: llm
+      id: 1772697636488-source-1772699969496-target
+      source: '1772697636488'
+      sourceHandle: source
+      target: '1772699969496'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: llm-source-1772701189996-target
+      source: llm
+      sourceHandle: source
+      target: '1772701189996'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 1772699969496-source-1772701189996-target
+      source: '1772699969496'
+      sourceHandle: source
+      target: '1772701189996'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 1772701189996-source-answer-target
+      source: '1772701189996'
+      sourceHandle: source
+      target: answer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: 用户输入
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - image
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          default: ''
+          hint: ''
+          label: file
+          options: []
+          placeholder: ''
+          required: true
+          type: file
+          variable: file
+      height: 109
+      id: '1772697636488'
+      position:
+        x: 23
+        y: 634
+      positionAbsolute:
+        x: 23
+        y: 634
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - sys
+          - query
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 10
+        model:
+          completion_params: {}
+          mode: chat
+          name: Qwen/Qwen2.5-VL-72B-Instruct
+          provider: langgenius/siliconflow/siliconflow
+        prompt_template:
+        - id: 29377300-9810-4aa5-a394-25fe7ed51057
+          role: system
+          text: 请提取这张照片的内容，其内容格式为 “发票号码”、“开票日期”、“出发时间”、“始发站”、“终点站”、“车次”、“票价”、“身份证号”、“姓名”、“电子票号”、“购买方名称”、“统一社会信用代码”
+            等字段返回信息，返回的结果信息以 json 格式返回
+        selected: false
+        title: 发票提取模型1
+        type: llm
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - sys
+            - files
+          enabled: true
+      height: 88
+      id: llm
+      position:
+        x: 373.28061421049347
+        y: 503.31261559809195
+      positionAbsolute:
+        x: 373.28061421049347
+        y: 503.31261559809195
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        answer: '{{#1772701189996.text#}}'
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 104
+      id: answer
+      position:
+        x: 1194.8703643437666
+        y: 580.9028475446473
+      positionAbsolute:
+        x: 1194.8703643437666
+        y: 580.9028475446473
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1772697636488'
+          - file
+        model:
+          completion_params: {}
+          mode: chat
+          name: glm-4v-plus
+          provider: langgenius/zhipuai/zhipuai
+        prompt_template:
+        - id: 7fefdee0-af6e-495a-879b-d6cc74d49b41
+          role: system
+          text: 请提取这张照片的内容，其内容格式为 “发票号码”、“开票日期”、“出发时间”、“始发站”、“终点站”、“车次”、“票价”、“身份证号”、“姓名”、“电子票号”、“购买方名称”、“统一社会信用代码”
+            等字段返回信息，返回的结果信息以 json 格式返回
+        - id: d3ae4a59-df6e-41cc-b033-7f31643cce6a
+          role: user
+          text: '1'
+        selected: false
+        title: 发票提取模型2
+        type: llm
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - sys
+            - files
+          enabled: true
+      height: 88
+      id: '1772699969496'
+      position:
+        x: 358.8443137775081
+        y: 636.3277407785025
+      positionAbsolute:
+        x: 358.8443137775081
+        y: 636.3277407785025
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: Qwen/Qwen2.5-VL-72B-Instruct
+          provider: langgenius/siliconflow/siliconflow
+        prompt_template:
+        - id: bedf9cab-2c18-48e3-a925-a76f532261fe
+          role: system
+          text: "{\n  \"Role\": \"JSON 数据比对专家\",\n  \"Profile\": {\n    \"专长\": \"\
+            精确比较和分析 JSON 数据\",\n    \"经验\": \"多年处理各种结构化数据的丰富经验\",\n    \"技能\": [\"\
+            准确识别差异\", \"使用颜色高亮标注\", \"详细的比对报告生成\"]\n  },\n  \"Goal\": [\n    \"逐行比对两个\
+            \ JSON 数据的内容\",\n    \"识别并标记所有存在的差异\",\n    \"使用颜色（红色）高亮显示不同之处\",\n  \
+            \  \"生成清晰、易读的比对结果报告\"\n  ],\n  \"Rules\": [\n    \"必须逐个键值对进行比较，不遗漏任何字段\"\
+            ,\n    \"只标注存在差异的部分，相同部分保持原样\",\n    \"使用红色作为差异标注的唯一颜色\",\n    \"保持原始\
+            \ JSON 的结构和格式，不进行任何修改\",\n    \"对于字符串差异，需要考虑大小写和空白字符\",\n    \"保持 JSON\
+            \ 的结构完整性，不改变原有的格式和顺序\"\n  ],\n  \"Workflow\": [\n    \"接收并解析两个待比对的 JSON\
+            \ 数据\",\n    \"确保两个 JSON 数据结构一致，如果不一致，报告结构差异\",\n    \"逐一比对每个键值对\",\n\
+            \    \"如果值不同，标记为新增或缺失\",\n    \"对不同的值用红色高亮标注\",\n    \"生成详细的比对报告，包括：\"\
+            ,\n    \"- 总体差异统计\",\n    \"- 每个差异项的具体描述\",\n    \"- 高亮显示的 JSON 数据\"\n\
+            \  ],\n  \"OutputFormat\": {\n    \"type\": \"json\",\n    \"structure\"\
+            : {\n      \"summary\": \"总体比对结果概要\",\n      \"differences\": [\n    \
+            \    {\n          \"key\": \"差异字段名\",\n          \"value1\": \"第一个 JSON\
+            \ 中的值\",\n          \"value2\": \"第二个 JSON 中的值\",\n          \"highlightColor\"\
+            : \"red\"\n        }\n      ],\n      \"highlightedJSON\": \"包含红色高亮的完整\
+            \ JSON 数据\"\n    }\n  },\n  \"Examples\": [\n    {\n      \"input\": {\n\
+            \        \"json1\": {\n          \"价税合计（小写）\": \"263.08\",\n         \
+            \ \"收款人\": \"段欣舟\"\n        },\n        \"json2\": {\n          \"价税合计（小写）\"\
+            : \"213.08\",\n          \"收款人\": \"段牛青\"\n        }\n      },\n     \
+            \ \"output\": {\n        \"summary\": \"发现 2 处差异\",\n        \"differences\"\
+            : [\n          {\n            \"key\": \"价税合计（小写）\",\n            \"value1\"\
+            : \"263.08\",\n            \"value2\": \"213.08\",\n            \"highlightColor\"\
+            : \"red\"\n          },\n          {\n            \"key\": \"收款人\",\n\
+            \            \"value1\": \"段欣舟\",\n            \"value2\": \"段牛青\",\n\
+            \            \"highlightColor\": \"red\"\n          }\n        ],\n  \
+            \      \"highlightedJSON\": {\n          \"价税合计（小写）\": \"<red>263.08</red>\"\
+            ,\n          \"收款人\": \"<red>段欣舟</red>\"\n        }\n      }\n    }\n\
+            \  ]\n}"
+        - id: d75d203f-a11f-4eab-8dc9-9b5aef5fd158
+          role: user
+          text: '{{#llm.text#}}
+
+            {{#1772699969496.text#}}'
+        selected: false
+        title: 基于文本发票对比模型
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1772701189996'
+      position:
+        x: 781.1496239809346
+        y: 580.9028475446473
+      positionAbsolute:
+        x: 781.1496239809346
+        y: 580.9028475446473
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: -936.0249925440478
+      y: -32.39797100387375
+      zoom: 1.2030250360821166
+  rag_pipeline_variables: []
